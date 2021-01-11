@@ -1,8 +1,15 @@
 import express from 'express';
 
-const app = express();
+import dotenv from 'dotenv';
+dotenv.config();
 
-const PORT = 4001 || process.env.PORT;
+import db from './db';
+db;
+
+const app = express();
+const { PORT } = process.env;
+
+const port = PORT || 4001;
 
 app.use('/', (req, res) => {
   res.json({
@@ -10,6 +17,6 @@ app.use('/', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`App is running on PORT ${PORT}`);
+app.listen(port, () => {
+  console.log(`App is running on PORT ${port}`);
 });
