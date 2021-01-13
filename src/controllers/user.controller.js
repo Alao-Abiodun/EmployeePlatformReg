@@ -124,6 +124,35 @@ class UserController {
       });
     }
   }
+
+  async removeAUser(req, res) {
+    try {
+      const { id } = req.params;
+      const removedUser = await User.findOneAndDelete({ _id: id });
+      const config = {
+        subject: 'Login details',
+        to: removedUser.email,
+        html: `<h1>Login Details</h1>
+        <p>email ${removedUser.email}</p>
+        <p>password: ${removedUser.password}</p>`,
+      };
+      await sendMail(config);
+      return res.status(200).json({
+        status: 'success',
+        data: {
+          message: 'User deleted',
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        status: error,
+        data: {
+          message: 'Server Error',
+        },
+      });
+    }
+  }
 }
 
 export default new UserController();
