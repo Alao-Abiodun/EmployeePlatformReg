@@ -60,7 +60,7 @@ class UserController {
   async getAllUsers(req, res) {
     try {
       const allUser = await User.find({});
-      return res.status(201).json({
+      return res.status(200).json({
         status: 'success',
         data: {
           message: 'All User Retrieved',
@@ -82,11 +82,36 @@ class UserController {
     try {
       const { id } = req.params;
       const user = await User.findOne({ _id: id });
-      return res.status(201).json({
+      return res.status(200).json({
         status: 'success',
         data: {
           message: 'A user is retrieved',
           user,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        status: error,
+        data: {
+          message: 'Server Error',
+        },
+      });
+    }
+  }
+
+  async updateAUser(req, res) {
+    try {
+      const { id } = req.params;
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: id },
+        { new: true, upsert: true }
+      );
+      return res.status(200).json({
+        status: 'success',
+        data: {
+          message: 'User updated successfully',
+          updatedUser,
         },
       });
     } catch (error) {
