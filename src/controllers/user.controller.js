@@ -56,6 +56,27 @@ class UserController {
       });
     }
   }
+
+  async getAllUsers(req, res) {
+    try {
+      const allUser = await User.find({});
+      return res.status(201).json({
+        status: 'success',
+        data: {
+          message: 'All User Retrieved',
+          allUser,
+        },
+      });
+    } catch (err) {
+      console.log(error);
+      return res.status(500).json({
+        status: error,
+        data: {
+          message: 'Server Error',
+        },
+      });
+    }
+  }
 }
 
 export default new UserController();
