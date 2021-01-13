@@ -9,8 +9,8 @@ exports.sendMail = async config => {
       port: 465,
       secure: true,
       auth: {
-        user: 'mayowad43@gmail.com',
-        pass: 'DevDabiriMayowa',
+        user: 'alao43844@gmail.com',
+        pass: 'alao1996',
       },
       tls: {
         rejectUnauthorized: false,
@@ -18,7 +18,7 @@ exports.sendMail = async config => {
     });
 
     const info = await transporter.sendMail({
-      from: 'teamwork@gmail.com',
+      from: 'UserRegistration@gmail.com',
       ...config,
     });
 

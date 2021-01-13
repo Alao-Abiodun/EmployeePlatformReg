@@ -15,7 +15,7 @@ app.use(express.json());
 
 const port = PORT || 4001;
 
-app.use('/', (req, res) => {
+app.get('/', (req, res) => {
   res.json({
     message: 'A simple boostrap express application.',
   });
