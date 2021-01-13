@@ -77,6 +77,28 @@ class UserController {
       });
     }
   }
+
+  async getASingleUser(req, res) {
+    try {
+      const { id } = req.params;
+      const user = await User.findOne({ _id: id });
+      return res.status(201).json({
+        status: 'success',
+        data: {
+          message: 'A user is retrieved',
+          user,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        status: error,
+        data: {
+          message: 'Server Error',
+        },
+      });
+    }
+  }
 }
 
 export default new UserController();
