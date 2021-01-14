@@ -64,6 +64,7 @@ class UserController {
         status: 'success',
         data: {
           message: 'All User Retrieved',
+          numOfUsers: allUser.length,
           allUser,
         },
       });
@@ -101,12 +102,26 @@ class UserController {
   }
 
   async updateAUser(req, res) {
+    const updates = Object.keys(req.body);
+    const allowedUpdates = [
+      'firstname',
+      'lastname',
+      'email',
+      'mobile',
+      'password',
+    ];
+    const isValidUpdate = updates.every(update =>
+      allowedUpdates.includes(update)
+    );
+    if (!isValidUpdate) {
+      return res.status(400).json({ message: 'Invalid updates field' });
+    }
     try {
       const { id } = req.params;
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: id },
-        { new: true, upsert: true }
-      );
+      const updatedUser = await User.findOneAndUpdate({ _id: id }, req.body, {
+        new: true,
+        runValidators: true,
+      });
       return res.status(200).json({
         status: 'success',
         data: {
@@ -130,7 +145,7 @@ class UserController {
       const { id } = req.params;
       const removedUser = await User.findOneAndDelete({ _id: id });
       const config = {
-        subject: 'Login details',
+        subject: 'This User has been removed from the application',
         to: removedUser.email,
         html: `<h1>Login Details</h1>
         <p>email ${removedUser.email}</p>
